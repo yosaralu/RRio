@@ -26,6 +26,13 @@
 # no more quotation marks will appear, now appear an M in status instead of the ?
 # in shell type: git status 
 # Everytime I do changes I have to make a comment to save a new file back up
+# Type git log to see the history
+# SHA is the number that appear in commit, every commit in the world has a unique SHA
+# to go out tap Q
+# git diff and the first numbers and letters in and then the name of the file, and
+# then you see the whole changes made in that moment 
+# example: git diff 1c8a1929 scripts/day3R.R
+
 # In R: Save first
 # Then I go to Commit and make a comment to decide what is going to be saved in the backup
 # If I do not commit, the changes I do will never be saved in the back up
