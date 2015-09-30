@@ -13,3 +13,15 @@
 # After this it apper an icon git in tool bar and a table Git 
 # inside the folder of the project an archive called .gitignore is created
 
+
+# The Table Git apperas with ? in status so I have to tell Git the files I want to include
+# It means to create a repository
+# So I go to config in Git tab and call Shell, and type git status
+# the red list that appears in shell after type git status shows where the arquives are
+# then type: git add . 
+# then type: git commit -m "" 
+# -m means a message is comming and "" is where the message is
+# so type: git commit -m "my first message" 
+# when I save data, in whatever the files, Git table will show it, 
+# no more quotation marks will appear, now appear an M in status instead of the ?
+# in shell type: git stauts 
