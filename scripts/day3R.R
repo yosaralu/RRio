@@ -38,3 +38,15 @@
 # If I do not commit, the changes I do will never be saved in the back up
 # Select the file in stages and save the commit
 # Then I can go to History to see all the versions
+
+
+## Using GitHub
+# open shell 
+# copy and paste the url in github once created the project there: 
+# git remote add origin https://github.com/yosaralu/RRio.git
+# type: git remote -v to see where is the project
+# type then: git push -u origin master 
+# then it will ask for user name and password in github
+
+ 
+#
