@@ -29,4 +29,5 @@
 # In R: Save first
 # Then I go to Commit and make a comment to decide what is going to be saved in the backup
 # If I do not commit, the changes I do will never be saved in the back up
-# After save the commit I can go to History to see all the versions
+# Select the file in stages and save the commit
+# Then I can go to History to see all the versions
