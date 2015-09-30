@@ -25,7 +25,8 @@
 # when I save data, in whatever the files, Git table will show it, 
 # no more quotation marks will appear, now appear an M in status instead of the ?
 # in shell type: git status 
-# Everytime I do changes I have to make a comment to save a new file
-# So I got to Commit and make a comment to decide what is going to be saved in the backup
-# If I do not commit, the changes I do, will never be saved in the back up
-# I can save the commit and the go to History to see all the versions
+# Everytime I do changes I have to make a comment to save a new file back up
+# In R: Save first
+# Then I go to Commit and make a comment to decide what is going to be saved in the backup
+# If I do not commit, the changes I do will never be saved in the back up
+# After save the commit I can go to History to see all the versions
