@@ -12,7 +12,7 @@ library(dplyr)
 #pipe operator %>%   
 #ctrl+shift+m
 
-#fliter and select
+#filter and select
 
 gm_europe_gdp <- gapminder %>%
   filter(continent=="Europe") %>%
@@ -97,3 +97,94 @@ gapminder_mean_lifeExp_2002 <- set.seed(1) #adding this function I made the resu
   #arrange(desc(continent))
  
   
+#  How to organize data sets? ---------------------------------------------
+
+
+# Tidying data with tidyr -------------------------------------------------
+library(tidyr)
+gap_wide <- read.csv(file="cleaned_data/gap_wide.csv")
+View(gap_wide)
+head(gap_wide)
+
+#gather all of the stuff
+gap_long <- gather(gap_wide, obstype_year, obs_values, -continent, -country)
+  
+head(gap_long)
+
+#what we need to do now is to separate the values
+
+gap_long_sep <- separate(gap_long, obstype_year, into = c("obstype", "year"), sep = "_") 
+head(gap_long_sep)
+
+#look at the structure
+str(gap_long_sep)
+
+#year is still a character, so I have to change that
+gap_long_sep$year <- as.numeric(gap_long_sep$year)
+
+#look at the structure again
+str(gap_long_sep)
+
+# Challenge: using gap_long calculate the mean life exp, 
+# population and gdpPercap for each continent. Hint: use the group_by()
+# and summarize () fucntions we learned in the dplyr lesson
+
+gap_long_sep %>%
+  group_by(continent, obstype) %>%
+  summarize(mean_obs = mean(obs_values))
+
+
+
+gap_long_sep %>%
+  group_by(continent, country, obstype) %>%
+ summarize(mean_obs = mean(obs_values))
+
+## put observation into columns
+# when groups are not unique I made the unique by making a new column
+## simple example of tidyr operations
+
+
+
+exemplo <- data.frame(grp = c("a","a","b","b"),
+                      foo = c(1,2,3,4),
+                      bar = c(5,6,7,8))
+exemplo
+gather(exemplo, key = "variable", value = "value", foo:bar)  ## would work for 3rd column
+## also by *excluding* a column
+gather(exemplo, key="variable", value = "value", grp)
+
+comprido <- gather(exemplo, key="variable", value = "value", -grp)
+comprido
+
+gordo <- spread(comprido[-1], key = variable, value = value)
+
+comprido %>% 
+  group_by(grp, variable) %>% 
+  mutate(new_name = seq_along(value)) %>% 
+  spread(variable, value)
+
+exemplo
+
+# CHALLENGE 3
+
+## part a
+## calculate the mean population size for each countries and (within continents)
+## 
+
+
+pop_means <- gapminder %>% 
+group_by(continent, country) %>% 
+  summarize(meanpop = mean(pop))
+
+pop_means
+
+## make acolumn for each country, and a row for each continent
+### ADVANCED fill in missing values with 0
+
+spread(pop_means, country, meanpop)
+pop_countries <- spread(pop_means, country, meanpop)
+View(pop_countries)
+#?spread
+#spread(data, key, value, fill = NA, convert = FALSE, drop = TRUE)
+pop_countries <- spread(pop_means, country, meanpop, fill = 0)
+View(pop_countries)
