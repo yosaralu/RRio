@@ -1,18 +1,22 @@
-#Install dplyr
+
+# Using dplyr -------------------------------------------------------------
+
+#Install dplyr (Alethia)
 library(dplyr)
-# select filter group_by summarize mutate 5 funçoes do pacote dplyr
+# This package has five functions: select, filter, group_by, summarize, mutate 
 # filter para linha e select para columns
 # pipe é um operador que encadeia funçoes 
 
 gapminder <- read.csv("data/gapminder.csv")
-
-#pipe operator %>%   Ele serve para 
+library(dplyr)
+#pipe operator %>%   
 #ctrl+shift+m
 
+#fliter and select
 
 gm_europe_gdp <- gapminder %>%
   filter(continent=="Europe") %>%
-  select (year, country,gdpPercap)
+  select (year, country, gdpPercap)
 View(gm_europe_gdp)
 
 #Challenge write a single command (which can span multiple lines and includes pipes)
@@ -39,9 +43,57 @@ View(gapminder_mean_gdp)
 
 
 #Challenge 2 calculate the average life exp per country. 
-#which had the longest life exp and which had the shortest?
+#which had the longest life exp and which had the shortest? 
 
 gapminder_mean_lifeExp <- gapminder %>%
   group_by(country) %>%
-  summarize(mean_lifeExp = mean(lifeExp))
+  summarize(mean_lifeExp = mean(lifeExp)) %>%
+  arrange(mean_lifeExp)
+View (gapminder_mean_lifeExp) 
+
+#ordered from the highest to the lower
+gapminder_mean_lifeExp <- gapminder %>%
+  group_by(country) %>%
+  summarize(mean_lifeExp = mean(lifeExp)) %>%
+  arrange(desc(mean_lifeExp)) ###arrange(desc())
 View (gapminder_mean_lifeExp)
+
+gdp_continent_year <- gapminder %>% 
+  group_by(continent, year) %>% 
+  summarize(mean_gdpPercap = mean(gdpPercap))
+View (gdp_continent_year)
+
+# It is possible to add more statistic calculation
+
+gdp_continent_year <- gapminder %>% 
+  group_by(continent, year) %>% 
+  summarize(mean_gdpPercap = mean(gdpPercap), sd_gdpPercap = sd(gdpPercap))
+View (gdp_continent_year)
+
+head(gdp_continent_year)
+
+#Mutate() add a new column inside a pipe
+
+gdp_pop_millions <- gapminder %>% 
+  mutate(pop_millions = pop/10^6)
+View(gdp_pop_millions)
+
+
+#Challenge 3 Calculate the average lifeexp in 2002 
+# of 2 randomly selected countries for each continent
+# then arrange the continent names in reverse order .
+# Hint: use the dplyr functions arrange () and sample_n()
+# they have similar syntanx to other dplyr functions
+
+#gapminder_mean_lifeExp_2002 <-
+  
+gapminder_mean_lifeExp_2002 <- set.seed(1) #adding this function I made the result from randomization be the same
+  gapminder %>% 
+  filter(year == 2002) %>% 
+  group_by(continent) %>% 
+  sample_n(2) %>% 
+  summarize(mean_lifeExp = mean(lifeExp)) %>% 
+  arrange(desc(mean_lifeExp))
+  #arrange(desc(continent))
+ 
+  
