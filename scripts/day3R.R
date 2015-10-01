@@ -48,5 +48,10 @@
 # type then: git push -u origin master 
 # then it will ask for user name and password in github
 
+
+# In github it is possible to create the project and then here I click on 
+# File > New Project > Git > Browse the directory > ok
+
+
  
 #
