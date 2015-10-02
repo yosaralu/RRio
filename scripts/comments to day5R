@@ -1,0 +1,5 @@
+Residual vs fitted values:
+
+Residuals are the thing the model did not explained. It is the vertical distance between the estimaton and the real values.
+
+Normal Q-Q If the error around the line is normally distributed, the plot is the mean of that distribution. The point are not in the line, your model is wrong. ESTE PLOT DICE CUAL ES EL CIERTO O ERRADO Y MUESTRA LA MAGNITUD DEL ERROR, SHAPIRO WILK NO MUESTRA.
