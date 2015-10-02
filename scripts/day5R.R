@@ -177,7 +177,9 @@ AIC(model9, model91, model92)
 model93 <- lm(log(pop) ~ year*country*continent, data = gapminder)
 anova(model93)
 
-
+### draw a poisson distribution
+pois_resp <- pois_resp %>% 
+  mutate (ys=rpois(1, lambda = xs))
 
 # Multivariate analyses ---------------------------------------------------
 # todos los analises multivariados compactan nubes de puntos a 2D y son basados en 
@@ -294,3 +296,8 @@ dune2 <- dune.env %>%
 
 dune2
 
+dune3 <- dune.env %>% 
+  mutate(dispersao = disper3$distances) %>% 
+  ggplot(aes(x = A1, y = dispersao)) +
+  geom_point()
+dune3

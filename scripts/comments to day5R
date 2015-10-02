@@ -24,3 +24,12 @@ Model 3: log(pop) ~ year * country
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 > el modelo 3 es el mejor  PORQUE EL RSS ES EL MENOR
+
+
+
+# rda no da para usar si las variables covarian, para eso hay otra funcion que usa covarianza
+# tricomp
+
+abundancia linear con gradiente rda
+
+abundancia unimodal con gradiente cca
