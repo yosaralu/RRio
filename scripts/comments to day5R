@@ -4,3 +4,23 @@ Residuals are the thing the model did not explained. It is the vertical distance
 
 Normal Q-Q If the error around the line is normally distributed, the plot is the mean of that distribution. The point are not in the line, your model is wrong. ESTE PLOT DICE CUAL ES EL CIERTO O ERRADO Y MUESTRA LA MAGNITUD DEL ERROR, SHAPIRO WILK NO MUESTRA.
 Siempre ver la magnitud de Y en el qq plot, entre mas pqequena la escala mejor.
+
+SELECION DE MODELOS
+
+model9 <- lm(log(pop) ~ 1, data = gapminder)
+model91 <- lm(log(pop) ~ year, data = gapminder)
+model92 <- lm(log(pop) ~ year*country, data = gapminder)
+model93 <- lm(log(pop) ~ year*country*continent, data = gapminder)
+anova(model9, model91, model92)
+Analysis of Variance Table
+
+Model 1: log(pop) ~ 1
+Model 2: log(pop) ~ year
+Model 3: log(pop) ~ year * country
+  Res.Df    RSS  Df Sum of Sq       F    Pr(>F)    
+1   1703 4385.1                                    
+2   1702 4183.6   1     201.5 51283.8 < 2.2e-16 ***
+3   1420    5.6 282    4178.0  3771.7 < 2.2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+> el modelo 3 es el mejor  PORQUE EL RSS ES EL MENOR

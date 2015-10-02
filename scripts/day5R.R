@@ -7,6 +7,7 @@ gapminder <- read.csv("data/gapminder.csv")
 library(dplyr)
 library(ggplot2)
 library(car)
+library(vegan)
 
 # probability distributions -----------------------------------------------
 
@@ -160,4 +161,136 @@ summary(model8)
 # aqui todavia no está bien - así que lo mejor es vovler y transformar los datos
 # aca no da AIC y eso no es bueno
 
+# AIC es util cuando se hace seleccion de modelos
+# load vegan
+
+model9 <- lm(log(pop) ~ 1, data = gapminder)
+model91 <- lm(log(pop) ~ year, data = gapminder)
+model92 <- lm(log(pop) ~ year*country, data = gapminder)
+
+anova(model9, model91, model92)
+AIC(model9, model91, model92)
+
+# AICcmodavgv is a good package for model averaging
+# check aictab() function
+
+model93 <- lm(log(pop) ~ year*country*continent, data = gapminder)
+anova(model93)
+
+
+
+# Multivariate analyses ---------------------------------------------------
+# todos los analises multivariados compactan nubes de puntos a 2D y son basados en 
+# matrices de distancias, a mayor distancia mayor diferencia en el espacio creado
+# todo va a ser siempre disimilariedado similariedad basado en distancia
+
+library(vegan)
+data("varechem")
+data("varespec")
+data("dune")
+data("dune.env")
+
+View(varechem)
+View(varespec)
+
+# no hay distancia ideal
+
+distl <- vegdist(varespec, method = "bray")
+distl
+distl <- vegdist(varespec, method = "bray", diag = TRUE)
+
+# pca en vegan es con la función rda
+
+pca1 <- rda(varechem)
+plot(pca1)
+
+# centralizar primero o standardize
+pca1 <- rda(varechem, scale = TRUE)
+plot(pca1)
+
+ordiplot(pca1) # check ordihull
+ordiplot(pca1, type = "text")
+ordiplot(pca1, display = "species")
+ordiplot(pca1, display = "sites")
+ordiplot(pca1, scaling = 3)
+pca1
+summary(pca1)
+scores(pca1)
+
+scores(pca1)$sites # aca posso fazer um dataframe e fazer o que eu quiser no ggplot
+
+rda1 <- rda(varespec ~ K + pH + P, data = varechem) #tem sempre que especificar as variaveis
+rda1
+plot(rda1)
+
+rda2 <- rda(log(varespec+1) ~ K + pH + P, data = varechem)
+rda2
+plot(rda2)
+
+rda3 <- rda(decostand(varespec, method = "hellinger") ~ K + pH + P, data = varechem)
+rda3
+plot(rda3)
+#hellinger es muy usado porque reduce el peso de especies raras
+
+#testar significancia de los ejes
+anova(rda3, by = "axis")
+anova(rda3, by = "terms") # SQQ Type I
+anova(rda3, by = "margin") # SQQ Type II
+# r quadrado ajustado da sua multivariada
+RsquareAdj(rda3)
+
+cca1 <- cca(decostand(varespec, method = "hellinger") ~ K + pH + P, data = varechem)
+cca1
+plot(cca1)
+anova(cca1, by = "axis")
+anova(cca1, by = "terms") # SQQ Type I
+anova(cca1, by = "margin") # SQQ Type II
+RsquareAdj(rda3)
+
+
+# mds matriz de distancia
+distl
+dist2 <- vegdist (varechem, method = "euclid")
+
+mds1 <- cmdscale(dist2)
+mds1
+plot(mds1)
+
+# variance partitioning
+# ?varpart
+
+# ?mantel for mantel test
+# ?anosim for anosim
+
+# permanova + permdisp
+
+head(dune)
+head(dune.env)
+head(dune.env)
+
+perm1 <- adonis(dune ~ Use, data = dune.env, method = "bray") # for permanova
+perm1
+
+perm2 <- adonis(dune ~ Management, data = dune.env, method = "bray") # for permanova
+perm2
+#post-test es cuantificando individualmente 
+
+dist3 <- vegdist(dune,method = "bray")
+disper3 <- betadisper(d = dist3, group = dune.env$Management)
+disper3
+permutest(disper3, pairwise = TRUE)
+plot(disper3)
+levels(dune.env$Management)
+boxplot(disper3)
+scores(disper3)
+disper3$distances
+# la distancia al centroide es la distancia en el boxplot
+
+library(dplyr)
+dune2 <- dune.env %>% 
+  mutate(dispersao = disper3$distances) %>% 
+  ggplot(aes(x=Management, y=dispersao)) +
+  geom_boxplot()
+
+dune2
 
