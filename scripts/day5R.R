@@ -126,3 +126,38 @@ hist(resid(model5))
 # ayuda a encontrar outliers
 
 locator()
+ 
+
+# fitting count data! -----------------------------------------------------
+
+ ### transform the response variable!
+
+model6 <- lm(log(pop) ~ year, data = gapminder)
+plot(model6)
+qqnorm(resid(model6));qqline(resid(model6))
+hist(resid(model6), col = "violet")
+
+## GLMs with poisson errors
+ 
+
+model7 <- glm(pop ~year, data = gapminder, family = poisson)
+plot(model7)
+
+# esse modelo ajusta melhor ao dado porque a magnitude dos residuos é menor
+summary(model7)
+# z value muy alto y p value muyyyyy bajo, el modelo está super mal
+# Ahi, los deviance null and residual deben ser vistos:
+model7$deviance/model7$df.residual
+# aqui deve ser menor do que 2 (acá da 90574383)
+# para arreglar esto se usa dividir la variable respuesta, en este caso pop, por ese numero:
+model71 <- glm(pop/model7$deviance/model7$df.residual ~year, data = gapminder, family = poisson)
+plot(model71)
+summary(model71)
+ # o hacer una quasipoisson
+model8 <- glm(pop ~ year, data = gapminder, family = quasipoisson())
+plot(model8)
+summary(model8)
+# aqui todavia no está bien - así que lo mejor es vovler y transformar los datos
+# aca no da AIC y eso no es bueno
+
+
